@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.math.PI
 
-class Tests {
+class
+Tests {
     @Test
     @Tag("Example")
     fun sqr() {
@@ -93,7 +94,7 @@ class Tests {
 
     @Test
     @Tag("Easy")
-    fun accountInThreeYears() {
+    fun accountInThreeYearjos() {
         assertEquals(133.1, accountInThreeYears(100, 10), 1e-2)
         assertEquals(1.0, accountInThreeYears(1, 0), 1e-2)
         assertEquals(104.0, accountInThreeYears(13, 100), 1e-2)
