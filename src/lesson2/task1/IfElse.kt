@@ -67,9 +67,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String = when {
-    (age % 10 in 5..9) || (age % 10 == 0) || (age % 100 in 11..19) -> ("$age лет")
-    (age % 10 == 1) -> ("$age год")
-    (age % 10 in 2..4) -> ("$age года")
+    age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19 -> ("$age лет")
+    age % 10 == 1 -> ("$age год")
+    age % 10 in 2..4 -> ("$age года")
     else -> "0"
 }
 
@@ -82,18 +82,18 @@ fun ageDescription(age: Int): String = when {
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double {
+                   t3: Double, v3: Double) : Double {
     val s = t1 * v1 + t2 * v2 + t3 * v3
     val s1 = t1 * v1
     val s2 = t2 * v2
-    val s3 = t3 * v3
     val l = s / 2
-    return if (s1 < l) {
-        val l1 = l - s1
-        if (l1 < s2)
-            (t1 + l1 / v2)
-        else (t1 + t2 + (l1 - s2) / v3)
-    } else l / v1
+    val l1 = l - s1
+    return when {
+        s1 >= l -> l / v1
+        l1 < s2 -> t1 + l1 / v2
+        l1 >= s2 -> t1 + t2 +(l1 - s2) / v3
+        else -> 0.0
+    }
 }
 
 /**
@@ -107,12 +107,17 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = when {
-    ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)) -> 3
-    ((kingX == rookX1) || (kingY == rookY1)) -> 1
-    ((kingX == rookX2) || (kingY == rookY2)) -> 2
-
-    else -> 0
+                       rookX2: Int, rookY2: Int): Int {
+    val a = kingX == rookX1
+    val b = kingX == rookX2
+    val c = kingY == rookY1
+    val d = kingY == rookY2
+    return when {
+        (a || c) && (b || d) -> 3
+        a || c -> 1
+        b || d -> 2
+        else -> 0
+    }
 }
 
 
@@ -128,12 +133,17 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = when {
-    ((kingX == rookX) || (kingY == rookY)) && (abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
-    (kingX == rookX) || (kingY == rookY) -> 1
-    abs(bishopX - kingX) == abs(bishopY - kingY) -> 2
-
-    else -> 0
+                          bishopX: Int, bishopY: Int): Int {
+    val a = kingX == rookX
+    val b = kingY == rookY
+    val c = kingX - bishopX
+    val d = kingY - bishopY
+    return when {
+        (a || b) && (abs(c) == abs(d)) -> 3
+        a || b -> 1
+        abs(c) == abs(d) -> 2
+        else -> 0
+    }
 }
 
 /**
