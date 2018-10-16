@@ -183,7 +183,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     val e = maxOf(a , c)
     val f = minOf(b , d)
     return when {
-        e <= d -> f - e
+        e <= f -> f - e
         else -> -1
     }
 }
