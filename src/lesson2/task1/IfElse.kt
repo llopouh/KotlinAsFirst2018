@@ -67,9 +67,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String = when {
-    age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19 -> ("$age лет")
-    age % 10 == 1 -> ("$age год")
-    age % 10 in 2..4 -> ("$age года")
+    age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19 -> "$age лет"
+    age % 10 == 1 -> "$age год"
+    age % 10 in 2..4 -> "$age года"
     else -> "0"
 }
 
@@ -112,10 +112,12 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
     val b = kingX == rookX2
     val c = kingY == rookY1
     val d = kingY == rookY2
+    val rook1 = a || c
+    val rook2 = b || d
     return when {
-        (a || c) && (b || d) -> 3
-        a || c -> 1
-        b || d -> 2
+        rook1 && rook2 -> 3
+        rook1 -> 1
+        rook2 -> 2
         else -> 0
     }
 }
@@ -138,10 +140,12 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
     val b = kingY == rookY
     val c = kingX - bishopX
     val d = kingY - bishopY
+    val rook = a || b
+    val bishop = abs(c) == abs(d)
     return when {
-        (a || b) && (abs(c) == abs(d)) -> 3
-        a || b -> 1
-        abs(c) == abs(d) -> 2
+        rook && bishop -> 3
+        rook -> 1
+        bishop -> 2
         else -> 0
     }
 }
@@ -154,14 +158,14 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun medianOF(a: Double, b: Double, c: Double): Double {
+fun medianOf(a: Double, b: Double, c: Double): Double {
     val m = a + b + c
     return m - maxOf(a, b, c) - minOf(a, b, c)
 }
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val d = maxOf(a, b, c)
     val e = minOf(a, b, c)
-    val f = medianOF(a, b, c)
+    val f = medianOf(a, b, c)
     return when {
         d >= e + f -> -1
         sqr(d) == sqr(e) + sqr(f) -> 1
@@ -180,8 +184,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int  {
-    val e = maxOf(a , c)
-    val f = minOf(b , d)
+    val e = maxOf(a, c)
+    val f = minOf(b, d)
     return when {
         e <= f -> f - e
         else -> -1
