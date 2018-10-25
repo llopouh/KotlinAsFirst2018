@@ -184,7 +184,6 @@ fun collatzSteps(x: Int): Int {
     var c = 0
     while (a != 1) {
         c++
-
         when {
             (a % 2 == 0) -> a /= 2
             else -> a = 3 * a + 1
