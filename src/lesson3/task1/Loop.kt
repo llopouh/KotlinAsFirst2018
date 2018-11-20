@@ -139,15 +139,10 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var a = m
-    var b = n
-    while (a != b) {
-        when {
-            a > b -> a -= b
-            else -> b -= a
-        }
-    }
-    return a ==1
+    if (m == 1 || n == 1) return true
+    if (max(m, n) % min(m, n) == 1) return false
+    return lcm(m, n) == m * n
+
 }
 
 /**
@@ -158,9 +153,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    val a = sqrt(n.toDouble())
-    val b = floor(a)
-    return b >= sqrt(m.toDouble())
+    return floor(sqrt(n.toDouble())) >= sqrt(m.toDouble())
 }
 
 /**
@@ -199,7 +192,15 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun plus(a:Double, b:Double, c:Double, d:Double, eps: Double): Double {
+
+fun sin(x: Double, eps: Double): Double {
+    val a = x % (2 * PI)
+    val b = a
+    val c = a
+    val d = 1.0
+    return adding(a, b, c, d, eps)
+}
+fun adding(a: Double, b: Double, c: Double, d: Double, eps: Double): Double {
     var b1 = b
     var c1 = c
     var d1 = d
@@ -210,15 +211,6 @@ fun plus(a:Double, b:Double, c:Double, d:Double, eps: Double): Double {
         d1 += 2
     }
     return b1
-}
-fun sin(x: Double, eps: Double): Double {
-    val a = x % (2 * PI)
-    val b = a
-    val c = a
-    val d = 1.0
-    return plus(a, b, c, d, eps)
-
-
 }
 
 /**
@@ -233,7 +225,7 @@ fun cos(x: Double, eps: Double): Double {
     val b = 1.0
     val c = 1.0
     val d = 0.0
-    return plus(a, b, c, d, eps)
+    return adding(a, b, c, d, eps)
 }
 
 /**

@@ -3,6 +3,8 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -43,7 +45,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  */
 fun daysInMonth(month: Int, year: Int): Int = when {
     ((month == 2) && (year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0) -> 29
-    (month == 2)  -> 28
+    (month == 2) -> 28
     (month == 4) || (month == 6) || (month == 9) || (month == 11) -> 30
     else -> 31
 
@@ -70,8 +72,5 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
-    (((r >= a) && (s >= b)) || ((r >= b) && (s >= c)) || ((r >= c) && (s >= a)) || ((r >= b) && (s >= a))
-            || ((r >= c) && (s >= b)) || ((r >= a) && (s >= c))) -> true
-    else -> false
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+        maxOf(r, s) >= a + b +c - minOf(a, b, c) - maxOf(a, b, c) && r + s - maxOf(r, s) >= minOf(a, b, c)
