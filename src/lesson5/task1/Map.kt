@@ -148,12 +148,12 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean =
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val a = mutableMapOf<String, Double>()
-    val repeats = mutableMapOf<String, List<Double>>()
+    val b = mutableMapOf<String, List<Double>>()
     for ((name, sum) in stockPrices)
-        repeats[name] = repeats.getOrDefault(name, listOf()) + sum
-    for ((name, price) in repeats) {
-        val middle = price.sum() / price.size
-        a[name] = middle
+        b[name] = b.getOrDefault(name, listOf()) + sum
+    for ((name, price) in b) {
+        val c = price.sum() / price.size
+        a[name] = c
     }
     return a
 }
