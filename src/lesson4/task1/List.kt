@@ -145,7 +145,7 @@ fun mean(list: List<Double>): Double = when {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    var a = mean(list)
+    val a = mean(list)
     for (i in 0 until list.size)
         list[i] -=a
     return list
@@ -195,9 +195,18 @@ fun polynom(p: List<Double>, x: Double): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
-
-
+fun accumulate(list: MutableList<Double>): MutableList<Double> {
+    var k = 0.0
+    return if (list.isEmpty())
+        list
+    else {
+        for (i in 0 until list.size) {
+            k += list[i]
+            list[i] = k
+        }
+        list
+    }
+}
 
 /**
  * Средняя
@@ -235,7 +244,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     val a = mutableListOf<Int>()
     var b = n
-    while (b != 0) {
+    while (b >= 1) {
         a.add(0, b % base)
         b /= base
     }
@@ -253,14 +262,14 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val list = convert(n, base)
     val a = "abcdefghijklmnopqrstuvwxyz"
-    val m = StringBuilder()
-    if (n == 0) m.append(n)
+    val b = StringBuilder()
+    if (n == 0) b.append(n)
     else
         for (element in list) {
-            if (element < 10) m.append(element.toString())
-            else m.append(a[element - 10].toString())
+            if (element < 10) b.append(element.toString())
+            else b.append(a[element - 10].toString())
         }
-    return m.toString()
+    return b.toString()
 }
 
 /**
@@ -270,7 +279,16 @@ fun convertToString(n: Int, base: Int): String {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var a = 0
+    var b = 1
+    val list = digits.reversed()
+    for (i in 0 until digits.size) {
+        a += list[i] * b
+        b *= base
+    }
+    return a
+}
 
 /**
  * Сложная
@@ -281,7 +299,13 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val a = str.toList()
+    return decimal(a.map {
+        if (it in '0'..'9') it.toInt() - '0'.toInt()
+        else it.toInt() - 'a'.toInt() + 10
+    }, base)
+}
 
 /**
  * Сложная
@@ -291,7 +315,25 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val roman = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
+    val arabian = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
+    val a = StringBuilder()
+    var b = n % 1000
+    if (n > 1000)
+        for (i in 1..(n / 1000))
+            a.append(roman[12])
+    while (b > 0) {
+        for (i in 0 until arabian.size) {
+            if (b < arabian[i]) {
+                b -= arabian[i - 1]
+                a.append(roman[i - 1])
+                break
+            }
+        }
+    }
+    return a.toString()
+}
 
 /**
  * Очень сложная
