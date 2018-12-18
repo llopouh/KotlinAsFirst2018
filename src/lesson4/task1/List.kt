@@ -131,10 +131,11 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = when {
-    list.isEmpty() -> 0.0
-    else -> list.sum() / list.size
+fun mean(list: List<Double>): Double {
+    return if (list.isEmpty()) return 0.0
+    else list.sum() / list.size
 }
+
 
 /**
  * Средняя
@@ -176,11 +177,9 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var a = 0.0
     var b = 0.0
     for (i in 0 until p.size) {
-        b += p[i] * pow(x, a)
-        a += 1
+        b += p[i] * pow(x, i.toDouble())
     }
     return b
 }
@@ -197,15 +196,11 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var k = 0.0
-    return if (list.isEmpty())
-        list
-    else {
-        for (i in 0 until list.size) {
-            k += list[i]
-            list[i] = k
-        }
-        list
+    for (i in 0 until list.size) {
+        k += list[i]
+        list[i] = k
     }
+    return list
 }
 
 /**
@@ -242,13 +237,16 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    val a = mutableListOf<Int>()
+    val catalog = mutableListOf<Int>()
     var b = n
-    while (b >= 1) {
-        a.add(0, b % base)
-        b /= base
+    return if (n == 0) listOf(0)
+    else {
+        while (b >= 1) {
+            catalog.add(b % base)
+            b /= base
+        }
+        catalog.asReversed()
     }
-    return a
 }
 
 /**
@@ -260,12 +258,12 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val list = convert(n, base)
+    val catalog = convert(n, base)
     val a = "abcdefghijklmnopqrstuvwxyz"
     val b = StringBuilder()
     if (n == 0) b.append(n)
     else
-        for (element in list) {
+        for (element in catalog) {
             if (element < 10) b.append(element.toString())
             else b.append(a[element - 10].toString())
         }

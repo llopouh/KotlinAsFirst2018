@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
+import lesson2.task2.daysInMonth
 
 /**
  * Пример
@@ -71,8 +72,18 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
-
+fun dateStrToDigit(str: String): String {
+    val monthToDay = mapOf("января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12)
+    val date = str.split(' ')
+    val day = date[0].toInt()
+    val month = monthToDay[date[1]]!!
+    val year = date[2].toInt()
+    return if (day !in 1..daysInMonth(month, year) || month !in 1..12 || date.size != 3)
+        ""
+    else
+        String.format("%02d.%02d.%d", day, month, year)
+}
 /**
  * Средняя
  *
@@ -83,7 +94,22 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = mapOf(1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
+            7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря")
+    val data = digital.split(".")
+    if (data.size != 3) return "" else {
+        val day = data[0].toIntOrNull()
+        val year = data[2].toIntOrNull()
+        val monthInt = data[1].toIntOrNull()
+        if (day == null || year == null || monthInt == null) return ""
+        if (monthInt !in 1..12) return ""
+        if (day !in 1..daysInMonth(monthInt, year)) return ""
+        val month = months[monthInt]
+        return String.format("%d %s %d", day, month, year)
+    }
+}
+
 
 /**
  * Средняя
